@@ -1,0 +1,7 @@
+atomap
+hyperspy
+numpy
+scipy
+matplotlib
+pillow
+PySide6

@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Data and outputs
+data/
+outputs/
+tests/output/
+log/
+
+# OS / tooling
+.DS_Store
+Thumbs.db
