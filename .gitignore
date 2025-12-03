@@ -8,6 +8,7 @@ data/
 outputs/
 tests/output/
 log/
+.continue/
 
 # OS / tooling
 .DS_Store
