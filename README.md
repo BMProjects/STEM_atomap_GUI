@@ -50,6 +50,20 @@ Outputs: `preprocessed.png`, `peaks_a/b.csv`, `peaks_overlay.png`, `displacement
 5) Displacement `dx, dy = peaks_b - ideal_b`, magnitude `|d|`, optional nm.  
 6) Visualization: A/B overlay, arrows (scalable), interpolated heatmap; saved to `outputs/<image-name>/`.
 
+## Todo / Status
+- Done:
+  - PySide6 GUI with preview, status bar, scale input; 16:10 layout.
+  - Atomap-based pipeline: preprocess, A/B detection, displacement computation, overlays/arrows/heatmap.
+  - Metadata/filename hints for nm/px and auto inversion; batch CLI runner with raw/inverted previews.
+  - Logging to `log/app.log`; standard outputs per image under `outputs/` or `tests/output/`.
+  - Docs (`docs/overview.md`) and reference added; version bumped to 0.1.1.
+- Next / Improve:
+  - Expose manual invert flag in CLI/GUI to override heuristics.
+  - More robust zone-axis detection tuning for high-mag/low-SNR images.
+  - Optional strain mapping when atomap strain utilities are available.
+  - Richer metadata parsing (detector/mode) and per-file debug dumps for failures.
+  - Batch UI controls and progress reporting for multiple files.
+
 ## Reference
 Weishen Liu, Bo Fu, Jingji Zhang, Xiang Ma, Yuming Mao, Quan Zong, Zhejie Zhu, Haoran Yuan, Yun Zhou, Wangfeng Bai,  
 “Exceptional capacitive energy storage in CaTiO3-based ceramics featuring laminate nanodomains,” Chemical Engineering Journal,  
