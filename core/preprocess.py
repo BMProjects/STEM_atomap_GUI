@@ -27,6 +27,7 @@ def preprocess_image(
     gaussian_sigma: float = 1.0,
     background_sigma: Optional[float] = None,
     roi: Optional[Tuple[int, int, int, int]] = None,
+    invert: bool = False,
 ) -> np.ndarray:
     """
     Basic preprocessing: optional ROI crop, background removal, and Gaussian smoothing.
@@ -35,6 +36,9 @@ def preprocess_image(
     if roi is not None:
         x1, y1, x2, y2 = roi
         img = img[y1:y2, x1:x2]
+    if invert:
+        # Flip contrast so atoms become bright for downstream peak finding
+        img = img.max() - img
     if background_sigma:
         img = remove_background(img, sigma=background_sigma)
     if gaussian_sigma and gaussian_sigma > 0:

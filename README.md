@@ -1,4 +1,4 @@
-# STEM + Atomap GUI (v0.1.0)
+# STEM + Atomap GUI
 
 Atomap-based STEM atomic position & displacement analysis with a PySide6 GUI. Core logic in `core/`, GUI in `ui_qt/`, CLI tests in `tests/`. Default input data directory: `./data`.
 
@@ -19,7 +19,7 @@ Atomap-based STEM atomic position & displacement analysis with a PySide6 GUI. Co
 - `tests/`: CLI test script and default output dir.
 - `log/`: runtime logs.
 - `outputs/`: default outputs (per input filename).
-- `VERSION`: current version (0.1.0).
+- `VERSION`: current version (0.1.1).
 
 ## Install
 ```bash
@@ -49,3 +49,8 @@ Outputs: `preprocessed.png`, `peaks_a/b.csv`, `peaks_overlay.png`, `displacement
 4) Ideal B from neighbor centers; build/refine B sublattice.  
 5) Displacement `dx, dy = peaks_b - ideal_b`, magnitude `|d|`, optional nm.  
 6) Visualization: A/B overlay, arrows (scalable), interpolated heatmap; saved to `outputs/<image-name>/`.
+
+## Reference
+Weishen Liu, Bo Fu, Jingji Zhang, Xiang Ma, Yuming Mao, Quan Zong, Zhejie Zhu, Haoran Yuan, Yun Zhou, Wangfeng Bai,  
+“Exceptional capacitive energy storage in CaTiO3-based ceramics featuring laminate nanodomains,” Chemical Engineering Journal,  
+512 (2025) 162477. https://doi.org/10.1016/j.cej.2025.162477

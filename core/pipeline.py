@@ -60,6 +60,7 @@ def run_pipeline(
     refine_sigma: float = 1.0,
     reference: str = "average",
     nm_per_pixel: Optional[float] = None,
+    invert: bool = False,
     output_dir: Optional[str] = None,
 ) -> PipelineResult:
     """
@@ -67,7 +68,13 @@ def run_pipeline(
     """
     logger.info(f"Starting pipeline | image={image_path}")
     raw = io_utils.load_image(image_path)
-    img = preprocess.preprocess_image(raw, gaussian_sigma=gaussian_sigma, background_sigma=background_sigma, roi=roi)
+    img = preprocess.preprocess_image(
+        raw,
+        gaussian_sigma=gaussian_sigma,
+        background_sigma=background_sigma,
+        roi=roi,
+        invert=invert,
+    )
     logger.info("Preprocess done")
 
     # A/B sublattice construction
