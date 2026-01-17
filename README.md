@@ -80,6 +80,31 @@ Built on the robust [Atomap](https://atomap.org/) library and PySide6, this tool
 
 Contributions are welcome! Please verify changes with `python tests/test_pipeline.py`.
 
+## 🔗 Citation / 引用
+
+If you use this software in your research, please cite our paper:
+如果您在研究中使用了本软件，请引用我们的论文：
+
+> Weishen Liu, Bo Fu, Jingji Zhang, Xiang Ma, Yuming Mao, Quan Zong, Zhejie Zhu, Haoran Yuan, Yun Zhou, Wangfeng Bai,
+> "Exceptional capacitive energy storage in CaTiO3-based ceramics featuring laminate nanodomains",
+> *Chemical Engineering Journal*, 512 (2025) 162477.
+> DOI: [10.1016/j.cej.2025.162477](https://doi.org/10.1016/j.cej.2025.162477)
+
+**BibTeX:**
+
+```bibtex
+@article{Liu2025Exceptional,
+  title = {Exceptional capacitive energy storage in CaTiO3-based ceramics featuring laminate nanodomains},
+  author = {Weishen Liu and Bo Fu and Jingji Zhang and Xiang Ma and Yuming Mao and Quan Zong and Zhejie Zhu and Haoran Yuan and Yun Zhou and Wangfeng Bai},
+  journal = {Chemical Engineering Journal},
+  volume = {512},
+  pages = {162477},
+  year = {2025},
+  doi = {10.1016/j.cej.2025.162477},
+  url = {https://doi.org/10.1016/j.cej.2025.162477}
+}
+```
+
 ## 📄 License
 
 This project is licensed under the MIT License.
