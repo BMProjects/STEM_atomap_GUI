@@ -1,0 +1,350 @@
+   Building stem-atomap-gui @ file:///run/media/bm/Data/Dev/STEM_atomap_GUI
+  × Failed to build `stem-atomap-gui @
+  │ file:///run/media/bm/Data/Dev/STEM_atomap_GUI`
+  ├─▶ The build backend returned an
+  │   error
+  ╰─▶ Call to
+      `setuptools.build_meta.build_editable`
+      failed (exit status: 1)
+
+      [stdout]
+      configuration error:
+      `tool.setuptools.packages` must be
+      valid exactly by one definition (0
+      matches found):
+
+          - type: array
+            items:
+              type: string
+              at least one of the
+      following:
+                - {type: string, format:
+      'python-module-name-relaxed'}
+                - {type: string, format:
+      'pep561-stub-name'}
+          - type: table
+            additional keys: False
+            keys:
+              'find':
+                type: table
+                additional keys: False
+                keys:
+                  'where':
+                    type: array
+                    items: {type:
+      string}
+                  'exclude':
+                    type: array
+                    items: {type:
+      string}
+                  'include':
+                    type: array
+                    items: {type:
+      string}
+                  'namespaces': {type:
+      boolean}
+
+      DESCRIPTION:
+          Packages that should be
+      included in the distribution. It
+      can be given either
+          as a list of package
+      identifiers or as a ``dict``-like
+      structure with a
+          single key ``find`` which
+      corresponds to a dynamic call to
+      
+      ``setuptools.config.expand.find_packages``
+      function. The ``find`` key is
+          associated with a nested
+      ``dict``-like structure that can
+      contain ``where``,
+          ``include``, ``exclude`` and
+      ``namespaces`` keys, mimicking
+      the keyword
+          arguments of the associated
+      function.
+
+      GIVEN VALUE:
+          {
+              "find": {
+                  "include": [
+                      "core*",
+                      "ui_qt*"
+                  ],
+                  "namespaces": false,
+                  "dependencies": [
+                      "atomap>=0.4.2",
+                      "hyperspy>=1.7.0",
+                      "numpy>=1.20.0",
+                      "scipy>=1.7.0",
+      
+      "matplotlib>=3.5.0",
+                      "pillow>=9.0.0",
+                      "PySide6>=6.0.0"
+                  ]
+              }
+          }
+
+      OFFENDING RULE: 'oneOf'
+
+      DEFINITION:
+          {
+              "oneOf": [
+                  {
+                      "title": "Array of
+      Python package identifiers",
+                      "type": "array",
+                      "items": {
+                          "$id":
+      "#/definitions/package-name",
+                          "title":
+      "Valid package name",
+                          "description":
+      "Valid package name (importable or
+      :pep:`561`).",
+                          "type":
+      "string",
+                          "anyOf": [
+                              {
+      
+      "type": "string",
+      
+      "format":
+      "python-module-name-relaxed"
+                              },
+                              {
+      
+      "type": "string",
+      
+      "format": "pep561-stub-name"
+                              }
+                          ]
+                      }
+                  },
+                  {
+                      "$id":
+      "#/definitions/find-directive",
+                      "title": "'find:'
+      directive",
+                      "type": "object",
+      
+      "additionalProperties": false,
+                      "properties": {
+                          "find": {
+                              "type":
+      "object",
+      
+      "$$description": [
+      
+      "Dynamic `package discovery",
+      
+      "<https://setuptools.pypa.io/en/latest/userguide/package_discovery.html>`_."
+                              ],
+      
+      "additionalProperties": false,
+      
+      "properties": {
+      
+      "where": {
+      
+      "description": "Directories to be
+      searched for packages (Unix-style
+      relative path)",
+      
+      "type": "array",
+      
+      "items": {
+      
+      "type": "string"
+                                      }
+                                  },
+      
+      "exclude": {
+      
+      "type": "array",
+      
+      "$$description": [
+      
+      "Exclude packages that match the
+      values listed in this field.",
+      
+      "Can container shell-style
+      wildcards (e.g. ``'pkg.*'``)"
+                                      ],
+      
+      "items": {
+      
+      "type": "string"
+                                      }
+                                  },
+      
+      "include": {
+      
+      "type": "array",
+      
+      "$$description": [
+      
+      "Restrict the found packages
+      to just the ones listed in this
+      field.",
+      
+      "Can container shell-style
+      wildcards (e.g. ``'pkg.*'``)"
+                                      ],
+      
+      "items": {
+      
+      "type": "string"
+                                      }
+                                  },
+      
+      "namespaces": {
+      
+      "type": "boolean",
+      
+      "$$description": [
+      
+      "When ``True``, directories
+      without a ``__init__.py`` file
+      will also",
+      
+      "be scanned for :pep:`420`-style
+      implicit namespaces"
+                                      ]
+                                  }
+                              }
+                          }
+                      }
+                  }
+              ]
+          }
+
+      For more details about `format`
+      see
+      https://validate-pyproject.readthedocs.io/en/latest/api/validate_pyproject.formats.html
+
+
+      [stderr]
+      Traceback (most recent call last):
+        File "<string>", line 14, in
+      <module>
+          requires =
+      get_requires_for_build({})
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/setuptools/build_meta.py",
+      line 473, in
+      get_requires_for_build_editable
+          return
+      self.get_requires_for_build_wheel(config_settings)
+      
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/setuptools/build_meta.py",
+      line 331, in
+      get_requires_for_build_wheel
+          return
+      self._get_build_requires(config_settings,
+      requirements=[])
+      
+      ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/setuptools/build_meta.py",
+      line 301, in _get_build_requires
+          self.run_setup()
+          ~~~~~~~~~~~~~~^^
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/setuptools/build_meta.py",
+      line 317, in run_setup
+          exec(code, locals())
+          ~~~~^^^^^^^^^^^^^^^^
+        File "<string>", line 1, in
+      <module>
+          import sys
+      
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/setuptools/__init__.py",
+      line 115, in setup
+          return
+      distutils.core.setup(**attrs)
+      
+      ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/setuptools/_distutils/core.py",
+      line 160, in setup
+          dist.parse_config_files()
+          ~~~~~~~~~~~~~~~~~~~~~~~^^
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/_virtualenv.py",
+      line 20, in parse_config_files
+          result =
+      old_parse_config_files(self,
+      *args, **kwargs)
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/setuptools/dist.py",
+      line 756, in parse_config_files
+      
+      pyprojecttoml.apply_configuration(self,
+      filename, ignore_option_errors)
+      
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/setuptools/config/pyprojecttoml.py",
+      line 72, in apply_configuration
+          config =
+      read_configuration(filepath, True,
+      ignore_option_errors, dist)
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/setuptools/config/pyprojecttoml.py",
+      line 140, in read_configuration
+          validate(subset, filepath)
+          ~~~~~~~~^^^^^^^^^^^^^^^^^^
+        File
+      "/home/bm/.cache/uv/builds-v0/.tmp2P9SuO/lib/python3.13/site-packages/setuptools/config/pyprojecttoml.py",
+      line 61, in validate
+          raise
+      ValueError(f"{error}\n{summary}")
+      from None
+      ValueError: invalid
+      pyproject.toml config:
+      `tool.setuptools.packages`.
+      configuration error:
+      `tool.setuptools.packages` must be
+      valid exactly by one definition (0
+      matches found):
+
+          - type: array
+            items:
+              type: string
+              at least one of the
+      following:
+                - {type: string, format:
+      'python-module-name-relaxed'}
+                - {type: string, format:
+      'pep561-stub-name'}
+          - type: table
+            additional keys: False
+            keys:
+              'find':
+                type: table
+                additional keys: False
+                keys:
+                  'where':
+                    type: array
+                    items: {type:
+      string}
+                  'exclude':
+                    type: array
+                    items: {type:
+      string}
+                  'include':
+                    type: array
+                    items: {type:
+      string}
+                  'namespaces': {type:
+      boolean}
+
+
+      hint: This usually indicates a
+      problem with the package or the
+      build environment.

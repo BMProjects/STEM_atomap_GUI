@@ -9,6 +9,12 @@ authors = [
     {name = "STEM Analysis Team"}
 ]
 
+
+
+[tool.setuptools]
+packages = ["core", "ui_qt"]
+
+
 dependencies = [
     "atomap>=0.4.2",
     "hyperspy>=1.7.0",

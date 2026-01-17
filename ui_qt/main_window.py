@@ -108,17 +108,17 @@ class MainWindow(QtWidgets.QMainWindow):
         left.setContentsMargins(5, 5, 5, 5)
         left.setSpacing(6)
 
-        self.btn_open = QtWidgets.QPushButton("选择图像")
+        self.btn_open = QtWidgets.QPushButton("Select Image")
         self.btn_open.clicked.connect(self.choose_image)
         left.addWidget(self.btn_open)
 
-        self.status = QtWidgets.QLabel("未选择文件")
+        self.status = QtWidgets.QLabel("No file selected")
         self.status.setWordWrap(True)
         # Removed MaximumHeight constraint to allow auto-expand
         left.addWidget(self.status)
 
         # Parameter inputs - compact layout
-        params_group = QtWidgets.QGroupBox("参数")
+        params_group = QtWidgets.QGroupBox("Parameters")
         form = QtWidgets.QVBoxLayout(params_group)
         form.setSpacing(2)
         form.setContentsMargins(4, 8, 4, 4)
@@ -135,7 +135,7 @@ class MainWindow(QtWidgets.QMainWindow):
             ("Refine σ:", self.in_refine),
             ("Separation (px):", self.in_sep),
             ("Threshold:", self.in_thr),
-            ("比例尺 (nm/px):", self.in_scale),
+            ("Scale (nm/px):", self.in_scale),
         ]:
             lbl = QtWidgets.QLabel(label)
             lbl.setMaximumHeight(18)
@@ -145,11 +145,11 @@ class MainWindow(QtWidgets.QMainWindow):
         
         left.addWidget(params_group)
 
-        self.btn_run = QtWidgets.QPushButton("运行")
+        self.btn_run = QtWidgets.QPushButton("Run")
         self.btn_run.clicked.connect(self.run_pipeline)
         left.addWidget(self.btn_run)
 
-        self.btn_export = QtWidgets.QPushButton("导出结果目录")
+        self.btn_export = QtWidgets.QPushButton("Export Results")
         self.btn_export.clicked.connect(self.export_results)
         left.addWidget(self.btn_export)
         left.addStretch()
@@ -171,64 +171,64 @@ class MainWindow(QtWidgets.QMainWindow):
         overview_layout.setColumnStretch(0, 1)
         overview_layout.setColumnStretch(1, 1)
         
-        self.preview_label = create_image_label("原始/预处理图")
-        self.overlay_label = create_image_label("A/B峰叠加")
-        self.arrows_label = create_image_label("位移箭头")
-        self.heatmap_label = create_image_label("位移热图")
+        self.preview_label = create_image_label("Raw / Preprocessed")
+        self.overlay_label = create_image_label("A/B Sublattice Overlay")
+        self.arrows_label = create_image_label("Displacement Vectors")
+        self.heatmap_label = create_image_label("Displacement Heatmap")
         overview_layout.addWidget(self.preview_label, 0, 0)
         overview_layout.addWidget(self.overlay_label, 0, 1)
         overview_layout.addWidget(self.arrows_label, 1, 0)
         overview_layout.addWidget(self.heatmap_label, 1, 1)
-        self.tab_widget.addTab(overview_widget, "概览")
+        self.tab_widget.addTab(overview_widget, "Overview")
 
         # Tab 2: Color-coded vectors
         vectors_widget = QtWidgets.QWidget()
         vectors_layout = QtWidgets.QHBoxLayout(vectors_widget)
-        self.angle_arrows_label = create_image_label("角度着色矢量图")
-        self.mag_arrows_label = create_image_label("模长着色矢量图")
+        self.angle_arrows_label = create_image_label("Angle-Coded Vectors")
+        self.mag_arrows_label = create_image_label("Magnitude-Coded Vectors")
         vectors_layout.addWidget(self.angle_arrows_label, 1)
         vectors_layout.addWidget(self.mag_arrows_label, 1)
-        self.tab_widget.addTab(vectors_widget, "彩色矢量图")
+        self.tab_widget.addTab(vectors_widget, "Colored Vectors")
 
         # Tab 3: Statistics
         stats_widget = QtWidgets.QWidget()
         stats_layout = QtWidgets.QHBoxLayout(stats_widget)
-        self.histogram_label = create_image_label("位移模长直方图")
-        self.polar_label = create_image_label("位移角度极图")
+        self.histogram_label = create_image_label("Displacement Histogram")
+        self.polar_label = create_image_label("Displacement Polar Plot")
         stats_layout.addWidget(self.histogram_label, 1)
         stats_layout.addWidget(self.polar_label, 1)
-        self.tab_widget.addTab(stats_widget, "统计分布")
+        self.tab_widget.addTab(stats_widget, "Statistics")
 
         # Tab 4: Strain
         strain_widget = QtWidgets.QWidget()
         strain_layout = QtWidgets.QVBoxLayout(strain_widget)
-        self.strain_combined_label = create_image_label("应变张量分析")
+        self.strain_combined_label = create_image_label("Strain Tensor Maps")
         strain_layout.addWidget(self.strain_combined_label)
-        self.tab_widget.addTab(strain_widget, "应变分析")
+        self.tab_widget.addTab(strain_widget, "Strain Analysis")
 
         root_layout.addWidget(left_widget)
         root_layout.addWidget(self.tab_widget, 1)
 
         # Status bar
-        self.statusBar().showMessage("就绪")
+        self.statusBar().showMessage("Ready")
 
     def choose_image(self):
         path, _ = QtWidgets.QFileDialog.getOpenFileName(
             self,
-            "选择图像",
+            "Select Image",
             "",
             "Images (*.dm3 *.dm4 *.tif *.tiff *.png *.jpg *.jpeg);;All Files (*)",
         )
         if path:
             self.image_path = path
-            self.status.setText(f"已选择: {path}")
-            self.statusBar().showMessage("已选择图像，准备运行")
+            self.status.setText(f"Selected: {path}")
+            self.statusBar().showMessage("Image selected, ready to run")
             img = io_utils.load_image(path)
             self._show_array(img, self.preview_label)
 
     def run_pipeline(self):
         if not self.image_path:
-            QtWidgets.QMessageBox.warning(self, "提示", "请先选择图像")
+            QtWidgets.QMessageBox.warning(self, "Warning", "Please select an image first")
             return
         try:
             gs = float(self.in_sigma.text() or DEFAULTS["gaussian_sigma"])
@@ -237,11 +237,11 @@ class MainWindow(QtWidgets.QMainWindow):
             thr = self._maybe_float(self.in_thr.text())
             scale = self._maybe_float(self.in_scale.text())
         except ValueError:
-            QtWidgets.QMessageBox.warning(self, "提示", "参数格式错误")
+            QtWidgets.QMessageBox.warning(self, "Warning", "Invalid parameter format")
             return
 
-        self.status.setText("运行中...")
-        self.statusBar().showMessage("运行中...")
+        self.status.setText("Running...")
+        self.statusBar().showMessage("Running...")
         self.btn_run.setEnabled(False)
 
         # Worker thread
@@ -260,15 +260,15 @@ class MainWindow(QtWidgets.QMainWindow):
     def _on_finished(self, result, error):
         self.btn_run.setEnabled(True)
         if error:
-            self.status.setText("失败")
-            self.statusBar().showMessage("失败")
+            self.status.setText("Failed")
+            self.statusBar().showMessage("Failed")
             self.logger.error(f"Pipeline failed: {error}")
-            QtWidgets.QMessageBox.critical(self, "错误", str(error))
+            QtWidgets.QMessageBox.critical(self, "Error", str(error))
             return
         self.result = result
         self.output_dir = result.output_dir
-        self.status.setText(f"完成 | 分辨率估计: {self.result.separation:.2f}px")
-        self.statusBar().showMessage(f"完成，输出目录: {self.output_dir}")
+        self.status.setText(f"Done | Separation: {self.result.separation:.2f}px")
+        self.statusBar().showMessage(f"Done. Output dir: {self.output_dir}")
         self._show_array(self.result.image, self.preview_label)
 
         # Tab 1: Overview - Load saved overlays
@@ -305,12 +305,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def export_results(self):
         if not self.result:
-            QtWidgets.QMessageBox.information(self, "提示", "请先运行分析")
+            QtWidgets.QMessageBox.information(self, "Info", "Please run analysis first")
             return
         if self.output_dir:
-            QtWidgets.QMessageBox.information(self, "导出完成", f"结果已保存到 {self.output_dir}")
+            QtWidgets.QMessageBox.information(self, "Export Completed", f"Results saved to {self.output_dir}")
         else:
-            QtWidgets.QMessageBox.information(self, "提示", "无输出目录信息")
+            QtWidgets.QMessageBox.information(self, "Info", "No output directory info")
 
     @staticmethod
     def _maybe_float(text: str) -> Optional[float]:
