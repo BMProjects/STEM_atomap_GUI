@@ -1,15 +1,68 @@
 # Python
 __pycache__/
-*.pyc
-.venv/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Data and outputs
-data/
-outputs/
-tests/output/
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Logs
 log/
-.continue/
+*.log
 
-# OS / tooling
-.DS_Store
-Thumbs.db
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Local configuration
+config.local.py
+
+# Project outputs (keep standard outputs but ignore temp test runs)
+outputs/*
+!outputs/.gitkeep
+tests/output/
+tests/output_*/
+
+# Data (users should provide their own)
+data/
+!data/example_image.dm3
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo

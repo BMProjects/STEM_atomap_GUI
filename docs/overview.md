@@ -1,12 +1,14 @@
 # STEM Atomap GUI – Design & Usage Overview (v0.1.1)
 
 ## 1. Requirements
+
 - **Functionality**: Load STEM images (dm3 preferred), preprocess, detect A/B cation sublattices, compute B-site displacements relative to ideal centrosymmetric positions, visualize peaks/arrows/heatmap, export CSV/PNG, and provide a PySide6 GUI plus a CLI test script.
 - **Inputs**: STEM images under `./data` (dm3, tif/jpg fallback). Optional: manual lattice separation (px), threshold, Gaussian sigmas, nm-per-pixel scale.
 - **Outputs**: Per-image folder (`outputs/<stem>/` or `tests/output/<stem>/`) with `preprocessed.png`, peaks CSVs, overlays, displacement CSV/plots, heatmap, and optional nm CSV.
 - **Non-functional**: Run offline; minimal dependencies; avoid GPU/JIT issues (numba disabled); logging to `log/app.log`; headless-safe plotting (Agg).
 
 ## 2. Overall Design
+
 - **Layers**
   - `core/`: preprocessing, I/O, lattice building, metrics, visualization, pipeline orchestration.
   - `ui_qt/`: PySide6 main window with controls, preview pane, status bar, output viewers.
@@ -24,6 +26,7 @@
   - Filename/metadata heuristics for inversion (DF-I/BF/ABF → invert; HAADF/ADF → no invert).
 
 ## 3. Detailed Design
+
 - **core/io_utils.py**
   - `load_image`: dm3/dm4 via HyperSpy, else PIL; returns float64 array.
   - `save_png`, `save_csv`, `crop_roi`.
@@ -31,6 +34,9 @@
   - `preprocess_image`: ROI crop → optional inversion → optional background removal (Gaussian) → Gaussian smoothing → normalize to 0–1.
 - **core/lattice.py**
   - `_estimate_separation_from_fft`: FFT-based dominant frequency to px separation.
+    - **Principle**: Uses Fast Fourier Transform (FFT) to convert the image to frequency domain. It identifies the dominant frequency peaks (bright spots in the diffraction pattern) closest to the center but excluding the DC component. Separation = Image Size / Peak Radius.
+    - **Physical Meaning**: Represents the average inter-atomic spacing (lattice constant projection) in pixels across the entire image.
+    - **Accuracy**: It is an initial estimate to guide the Gaussian blob finding. It does not need to be perfectly accurate because subsequent atomic position refinement achieves sub-pixel precision. However, for highly distorted lattices, manual input may be required.
   - `build_sublattices`: find A peaks (atomap), construct zone axes, derive ideal B (centers), build B sublattice; may raise if zone axes insufficient.
   - `compute_b_displacements`: returns dx, dy between detected B and ideal B.
 - **core/pipeline.py**
@@ -48,7 +54,9 @@
   - For each file: auto metadata hints (nm/px, invert), save `raw.png` and `raw_inverted.png` when inversion is suggested, then run pipeline, save artifacts and summary.
 
 ## 4. User Manual
+
 ### Install
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
@@ -56,21 +64,26 @@ pip install -r requirements.txt
 ```
 
 ### Run GUI
+
 ```bash
 python main.py
 ```
+
 Steps: select image → set/confirm params (separation if known, nm/px if known) → run. Preview updates; outputs saved to `outputs/<filename-stem>/`. Status bar shows progress; logs in `log/app.log`.
 
 ### Run CLI Tests
+
 ```bash
 python tests/test_pipeline.py
 # optional examples:
 # python tests/test_pipeline.py --image data/250525\ 154446\ STEM\ 5.1Mx\ HAADF\ c.dm3 --separation 20 --nm-per-pixel 0.02
 # python tests/test_pipeline.py --image data --output tests/output --arrow-scale 30
 ```
+
 Outputs per file under `tests/output/<stem>/`: `raw.png`, optional `raw_inverted.png`, `preprocessed.png`, `peaks_a/b.csv`, `peaks_overlay.png`, `displacement.csv` (px, optional nm), `displacement_arrows.png`, `displacement_heatmap.png`.
 
 ### Inputs & Parameters
+
 - **Image**: dm3 preferred (metadata used); others (tif/jpg) supported.
 - **Separation (px)**: provide if automatic FFT estimate fails or for high magnification.
 - **Threshold**: peak-finding relative threshold; lower to pick weaker peaks.
@@ -79,6 +92,7 @@ Outputs per file under `tests/output/<stem>/`: `raw.png`, optional `raw_inverted
 - **Invert**: auto-inferred (DF-I/BF/ABF) but can be overridden by editing run parameters if needed.
 
 ### Outputs
+
 - `raw.png` / `raw_inverted.png` (tests only): sanity check for contrast.
 - `preprocessed.png`: filtered/inverted/normalized image used for detection.
 - `peaks_a.csv`, `peaks_b.csv`, `peaks_overlay.png`: detected A/B peaks.
@@ -87,16 +101,19 @@ Outputs per file under `tests/output/<stem>/`: `raw.png`, optional `raw_inverted
 - `displacement_heatmap.png`: interpolated |displacement| magnitude map.
 
 ### Troubleshooting
+
 - “Not enough zone axes…”: provide `--separation`, adjust `--threshold` lower, ensure correct inversion, or use a larger ROI with clearer lattice.
 - Empty heatmap/arrows: verify B peaks detected; check `peaks_overlay.png`.
 - Metadata issues: pass `--nm-per-pixel` manually; if contrast is wrong, manually invert via params.
 
 ## 5. Extensibility Notes
+
 - Strain calculation placeholder in `pipeline.py` (needs atomap strain support).
 - For robustness: expose more atomap parameters (nearest neighbors, atom_plane_tolerance), add a manual invert flag to CLI/GUI, add batch UI.
 - Consider reading detector/mode metadata more comprehensively and adding a per-file debug dump for failures.
 
 ## 6. Testing Plan (current focus)
+
 - **GUI sanity**: load a single HAADF dm3, set separation/nm-per-pixel manually, run and verify previews, status updates, output folder artifacts, and log entries.
 - **CLI single**: `python tests/test_pipeline.py --image data/<file>.dm3 --output tests/output_single --arrow-scale 30 --nm-per-pixel 0.02`; check full outputs, no exceptions.
 - **Metadata/inversion**: dm3 with scale in metadata (nm-per-pixel omitted) → verify displacement_nm.csv; DF-I/BF files → inspect `raw.png` vs `raw_inverted.png`, confirm overlay correctness.

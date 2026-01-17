@@ -1,0 +1,41 @@
+[project]
+name = "stem-atomap-gui"
+version = "0.2.0"
+description = "Atomap-based STEM atomic position & displacement analysis with PySide6 GUI"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "STEM Analysis Team"}
+]
+
+dependencies = [
+    "atomap>=0.4.2",
+    "hyperspy>=1.7.0",
+    "numpy>=1.20.0",
+    "scipy>=1.7.0",
+    "matplotlib>=3.5.0",
+    "pillow>=9.0.0",
+    "PySide6>=6.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "mypy>=1.0.0",
+    "ruff>=0.1.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false

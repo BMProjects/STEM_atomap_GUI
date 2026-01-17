@@ -1,0 +1,19 @@
+name: Gemini 3 Pro
+version: 1.0.5
+schema: v1
+
+models:
+  - name: Gemini 3 Pro
+    provider: gemini
+    model: gemini-3-pro
+    apiKey: AIzaSyC_N60QAZr0F5swcesKdkXQ3Kxbua-PkYo
+    roles:
+      - chat
+      - edit
+      - apply
+    defaultCompletionOptions:
+      contextLength: 1048576
+      maxTokens: 65536
+    capabilities:
+      - tool_use
+      - image_input

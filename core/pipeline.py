@@ -23,6 +23,7 @@ from . import metrics
 from . import preprocess
 from . import io_utils
 from . import viz
+from . import stats
 
 
 LOG_DIR = Path(__file__).resolve().parent.parent / "log"
@@ -112,7 +113,13 @@ def run_pipeline(
         "dy_nm": dy_nm,
         "mag_nm": mag_nm,
     }
-    strain = {}  # Placeholder; strain calculation requires get_strain_map which may be absent in 0.4.2
+    # Compute strain from displacement field
+    try:
+        strain = metrics.compute_strain_from_displacement(peaks_b, dx_px, dy_px, img.shape)
+        logger.info("Strain calculation completed")
+    except Exception as exc:
+        logger.warning(f"Strain calculation failed: {exc}")
+        strain = {}
 
     # Save standard outputs
     out_dir = Path(output_dir) if output_dir else Path("outputs") / Path(image_path).stem
@@ -135,8 +142,37 @@ def run_pipeline(
             scale_nm_per_px=nm_per_pixel,
         )
         viz.save_displacement_heatmap(img, peaks_b, mag_px, out_dir / "displacement_heatmap.png")
+        # Color-coded displacement arrows (angle and magnitude)
+        viz.save_displacement_arrows_colored(
+            img,
+            ideal_b,
+            dx_px,
+            dy_px,
+            out_dir / "displacement_arrows_angle.png",
+            color_mode="angle",
+            arrow_scale=sep if sep else 1.0,
+            nm_per_pixel=nm_per_pixel,
+        )
+        viz.save_displacement_arrows_colored(
+            img,
+            ideal_b,
+            dx_px,
+            dy_px,
+            out_dir / "displacement_arrows_magnitude.png",
+            color_mode="magnitude",
+            arrow_scale=sep if sep else 1.0,
+            nm_per_pixel=nm_per_pixel,
+        )
         if dx_nm is not None:
             io_utils.save_csv(np.column_stack((dx_nm, dy_nm)), header="dx,dy (nm)", path=out_dir / "displacement_nm.csv")
+        # Statistical analysis outputs
+        stats.save_magnitude_histogram(mag_px, out_dir / "displacement_histogram.png", nm_per_pixel=nm_per_pixel)
+        stats.save_angle_polar_histogram(dx_px, dy_px, out_dir / "displacement_polar.png")
+        stats_dict = stats.compute_statistics(dx_px, dy_px, nm_per_pixel=nm_per_pixel)
+        stats.save_statistics_summary(stats_dict, out_dir / "statistics.txt")
+        # Strain maps
+        if strain:
+            viz.save_strain_maps(strain, img.shape, out_dir / "strain", nm_per_pixel=nm_per_pixel)
     except Exception as exc:
         logger.exception(f"Failed saving outputs: {exc}")
         raise
